@@ -40,4 +40,49 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Renvoi les commentaires associés à l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Renvoi les photos associées à l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function photos() {
+        return $this->hasMany(Photo::class);
+    }
+
+    /**
+     * Renvoi les groupes associés à l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function groups() {
+
+        return $this->BelongsToMany(Group::class)
+                    ->using(GroupUser::class)
+                    ->withPivot("id")
+                    ->withTimestamps();
+    }
+
+
+
+    /**
+     * Renvoi les photos associées à l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function photosAppearance() {
+        return $this->BelongsToMany(Photo::class)
+                    ->using(PhotoUser::class)
+                    ->withPivot("id")
+                    ->withTimestamps();
+    }
 }
